@@ -11,6 +11,8 @@ A universal Python library for analyzing differences between files of various fo
 - **JSON Output**: Structured results in JSON format
 - **Optimized Performance**: O(n) complexity for individual file processing
 - **Extensible**: Easy to add new file format support
+- **S3 Integration**: Direct comparison of files stored in S3/MinIO cloud storage
+- **Cloud Storage Support**: Works with AWS S3, MinIO, and other S3-compatible services
 
 ## Installation
 
@@ -28,6 +30,9 @@ pip install file-diff-analyzer[pdf]
 
 # Install with all format support
 pip install file-diff-analyzer[all]
+
+# Install with S3 support
+pip install file-diff-analyzer[s3]
 
 # Install with development tools
 pip install file-diff-analyzer[dev]
@@ -82,6 +87,36 @@ result = universal_analyzer.universal_analyze()
 # Get detailed change information
 print(f"Real changes: {result['summary']['real_changes_count']}")
 print(f"Structural shifts: {result['summary']['structural_changes_count']}")
+```
+
+### S3 File Comparison
+
+```python
+from file_diff_analyzer import S3Client, S3FileDiffAnalyzer, S3DownloadConfig
+
+# Initialize S3 client (works with MinIO, AWS S3, etc.)
+s3_client = S3Client(
+    aws_access_key_id="your-access-key",
+    aws_secret_access_key="your-secret-key",
+    endpoint_url="http://localhost:9000",  # MinIO endpoint
+    region_name="us-east-1"
+)
+
+# Create S3 analyzer
+analyzer = S3FileDiffAnalyzer(s3_client=s3_client)
+
+# Compare files directly from S3
+result = analyzer.compare_s3_files_simple(
+    "s3://bucket/path/file_v1.pdf",
+    "s3://bucket/path/file_v2.pdf"
+)
+
+# Get comparison results
+similarity = result["comparison_result"]["basic_analysis"]["similarity_percentage"]
+print(f"Files are {similarity:.1f}% similar")
+
+# Clean up temporary files
+analyzer.cleanup()
 ```
 
 ### Text Segment Analysis

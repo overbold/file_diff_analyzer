@@ -20,8 +20,8 @@ class TestRoadmapComparison:
         roadmap_v1_1 = current_dir.parent.parent.parent.parent / "tests" / "datasets" / "pilot" / "ROADMAP_v1.1.en.txt"
         roadmap_v1_2 = current_dir.parent.parent.parent.parent / "tests" / "datasets" / "pilot" / "ROADMAP_v1.2.en.txt"
         
-        assert roadmap_v1_1.exists(), f"ROADMAP v1.1 not found: {roadmap_v1_1}"
-        assert roadmap_v1_2.exists(), f"ROADMAP v1.2 not found: {roadmap_v1_2}"
+        assert roadmap_v1_1.exists(), f"roadmap_v1.1 not found: {roadmap_v1_1}"
+        assert roadmap_v1_2.exists(), f"roadmap_v1.2 not found: {roadmap_v1_2}"
         
         return str(roadmap_v1_1), str(roadmap_v1_2)
     
