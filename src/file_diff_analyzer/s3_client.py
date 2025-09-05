@@ -6,7 +6,6 @@ Handles S3 file operations including downloads, metadata extraction, and file pr
 
 import os
 import tempfile
-import logging
 from typing import Optional, Dict, Any, Tuple
 from pathlib import Path
 import boto3
@@ -15,7 +14,16 @@ from .s3_models import S3FileInfo, S3DownloadConfig
 from .extractors import TextExtractor
 import time
 
-logger = logging.getLogger(__name__)
+try:
+    from services.shared.logging.core.setup import get_logger
+except ImportError:
+    # Fallback для Docker контейнера
+    import sys
+    import os
+    sys.path.append('/app')
+    from services.shared.logging.core.setup import get_logger
+
+logger = get_logger("s3_client")
 
 
 class S3Client:

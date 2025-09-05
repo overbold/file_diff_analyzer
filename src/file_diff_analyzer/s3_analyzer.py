@@ -6,7 +6,6 @@ Extends the file difference analyzer to work with S3 files directly.
 
 import os
 import tempfile
-import logging
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from .s3_client import S3Client
@@ -14,7 +13,16 @@ from .s3_models import S3FileInfo, S3ComparisonRequest, S3ComparisonResult, S3Do
 from .universal_analyzer import UniversalFileDiffAnalyzer
 from .models import AnalysisConfig
 
-logger = logging.getLogger(__name__)
+try:
+    from services.shared.logging.core.setup import get_logger
+except ImportError:
+    # Fallback для Docker контейнера
+    import sys
+    import os
+    sys.path.append('/app')
+    from services.shared.logging.core.setup import get_logger
+
+logger = get_logger("s3_analyzer")
 
 
 class S3FileDiffAnalyzer:
